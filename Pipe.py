@@ -1,7 +1,7 @@
 from random import randrange
 from Floor import Floor
 from View import Screen
-from pygame import USEREVENT, time, image, transform, KEYDOWN, K_SPACE, MOUSEBUTTONDOWN
+from pygame import USEREVENT, time, image, transform
 
 
 class Pipe:

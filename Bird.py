@@ -1,24 +1,45 @@
 from View import Screen
 from Floor import Floor
-from pygame import image, transform, Surface, K_SPACE, MOUSEBUTTONDOWN, KEYDOWN
+from pygame import image, transform, Surface, USEREVENT, time
 
 
-class Bird(Screen):
-    gravity = 0.25
-    speed = 5  # tốc độ chim đi lên.
+# Điều chỉnh class Bird
 
-    def __init__(self, path_image='image/skeleton-01_fly_00.png'):
-        self.surface = image.load(path_image)
-        self.width, self.height = Surface.get_size(self.surface)
 
-        self.surface = transform.scale(self.surface, (self.width / 4, self.height / 4))
+class Bird:
+    __gravity = 0.25
+    __speed = 5  # tốc độ chim đi lên.
 
+    # tạo sự kiện cho bird
+    bird_fly = USEREVENT + 1
+    time.set_timer(bird_fly, 20)
+
+    def __init__(self, path_image='image/bird/0.png'):
+        self.list_surface = []
+        self.add_list_surface()
+        self.index_surface = 0
+        self.surface = self.list_surface[self.index_surface]
         self.rect = self.surface.get_rect(center=(100, Screen.height / 2))
         self.movement = 0
 
+        # tạo hiệu ứng chim bay.
+    def animation(self):
+        self.surface = self.list_surface[self.index_surface]
+        self.rect = self.surface.get_rect(center=(100, self.rect.centery))
+
+    def add_list_surface(self):
+        for i in range(17):
+            temp = image.load('image/bird/' + str(i) + '.png')
+            w, h = Surface.get_size(temp)
+            temp = transform.scale(temp, (w / 15, h / 15))
+            self.list_surface.append(temp)
+
+    def rotate(self):
+        return transform.rotate(self.surface, -self.movement * 3)
+
     def handle_click_and_mouse(self):
         self.movement = 0
-        self.movement = -Bird.speed
+        self.movement = -Bird.__speed
 
     def reset_game(self):
         self.rect = self.surface.get_rect(center=(100, Screen.height / 2))
@@ -35,8 +56,9 @@ class Bird(Screen):
     def draw(self, window, is_play):
         if not is_play:
             return
-        self.movement += Bird.gravity
+        self.movement += Bird.__gravity
+        bird_rotate = self.rotate()
         self.rect.centery += self.movement
-        window.blit(self.surface, self.rect)
+        window.blit(bird_rotate, self.rect)
 
         # kiem tra va cham

@@ -32,16 +32,23 @@ class Control:
                 is_space = sub.type == KEYDOWN and sub.key == K_SPACE
                 is_mouse_left = sub.type == MOUSEBUTTONDOWN and sub.button == 1
 
-                if is_space or is_mouse_left and self.is_play:  # khi game còn chơi.
+                if (is_space or is_mouse_left) and self.is_play:  # khi game còn chơi.
                     self.bird.handle_click_and_mouse()
-                elif is_space or is_mouse_left and not self.is_play:
+                elif (is_space or is_mouse_left) and not self.is_play:
                     self.__is_play = True
                     self.bird.reset_game()
                     self.pipe.reset_game()
+                if sub.type == Bird.bird_fly:
+                    if self.bird.index_surface < 16:
+                        self.bird.index_surface += 1
+                    else:
+                        self.bird.index_surface = 0
+                    self.bird.animation()
+
                 self.pipe.handle_create_pipe(sub)  # tạo ra các pipe
 
-            self.view.update( self.__is_play, self.pipe, self.floor, self.bird)
-            self.__is_play =  not self.bird.is_collision(self.pipe)
+            self.view.update(self.__is_play, self.pipe, self.floor, self.bird)
+            self.__is_play = not self.bird.is_collision(self.pipe)
 
         quit()
 
