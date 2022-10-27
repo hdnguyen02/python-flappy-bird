@@ -11,7 +11,7 @@ class Pipe:
     surface_top = transform.flip(surface_bottom, False, True)
     start_y_random = Screen.height - Floor.height + 10
     end_y_random = start_y_random + height - min_y
-    previous_y = None # luu tru lan random truoc.
+    previous_y = None  # luu tru lan random truoc.
     step = 50
     # khởi tạo sự kiện cho pipe
     event_pipe = USEREVENT
@@ -23,31 +23,17 @@ class Pipe:
 
     def __init__(self):
         self.list_pipe = []  # khởi tạo pipe
-        self.__is_play = True # đánh dấu trạng thái vẫn còn hoạt động.
 
-    # các hàm seter
-    # tạo hàm get
-    @property
-    def is_play(self):
-        return self.__is_play
-
-    @is_play.setter
-    def is_play(self,status):
-        self.__is_play = status
-
-    def handle_event(self, sub_event):
+    def handle_create_pipe(self, sub_event):
         if sub_event.type == Pipe.event_pipe:
             self.add_random_pipe()
-        elif ((sub_event.type == KEYDOWN and sub_event.key == K_SPACE) or (sub_event.type == MOUSEBUTTONDOWN)) and not self.__is_play:
-            self.reset_game()
 
     def move_pipe(self):
         for pipe in self.list_pipe:
             pipe.centerx -= Pipe.speed
 
-    def draw(self, window):
-        # game còn hoạt động mới vẽ ra
-        if not self.__is_play:
+    def draw(self, window,is_play):
+        if not is_play:
             return
         self.move_pipe()
         for pipe in self.list_pipe:
@@ -57,7 +43,6 @@ class Pipe:
                 window.blit(Pipe.surface_bottom, pipe)
 
     def reset_game(self):
-        self.__is_play = True
         self.list_pipe.clear()
 
     def add_random_pipe(self):

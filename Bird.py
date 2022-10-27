@@ -16,28 +16,11 @@ class Bird(Screen):
         self.rect = self.surface.get_rect(center=(100, Screen.height / 2))
         self.movement = 0
 
-        # kiểm tra xem game còn chạy hay không
-        self.__is_play = True
-
-    # setter getter
-    @property
-    def is_play(self):
-        return self.__is_play
-
-    @is_play.setter
-    def is_play(self, status):
-        self.__is_play = status
-
-    def handle_event(self, sub_event):
-        if ((sub_event.type == KEYDOWN and sub_event.key == K_SPACE) or (sub_event.type == MOUSEBUTTONDOWN)) and self.__is_play:
-            self.movement = 0
-            self.movement = -Bird.speed
-        elif ((sub_event.type == KEYDOWN and sub_event.key == K_SPACE) or (sub_event.type == MOUSEBUTTONDOWN)) and not self.__is_play:
-            self.reset_game()
+    def handle_click_and_mouse(self):
+        self.movement = 0
+        self.movement = -Bird.speed
 
     def reset_game(self):
-        # điều chỉnh lại
-        self.__is_play = True # set lại trạng thái của chú chim
         self.rect = self.surface.get_rect(center=(100, Screen.height / 2))
         self.movement = 0
 
@@ -49,13 +32,11 @@ class Bird(Screen):
             return True
         return False
 
-    def draw(self, window):
-        if not self.__is_play:
+    def draw(self, window, is_play):
+        if not is_play:
             return
         self.movement += Bird.gravity
         self.rect.centery += self.movement
         window.blit(self.surface, self.rect)
-
-
 
         # kiem tra va cham

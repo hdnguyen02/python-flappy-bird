@@ -12,7 +12,9 @@ class Floor:
     def __init__(self):
         self.x = 0
 
-    def draw(self, screen):
+    def draw(self, screen, is_play):
+        if not is_play:
+            return
         rect_01 = self.surface.get_rect(bottomleft=(self.x, Screen.height))
         rect_02 = self.surface.get_rect(bottomleft=(self.x + self.width, Screen.height))
         rect_03 = self.surface.get_rect(bottomleft=(self.x + self.width * 2, Screen.height))

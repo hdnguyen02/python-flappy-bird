@@ -15,8 +15,8 @@ class View(Screen):
         self.bg = transform.scale(self.bg, (1920, Screen.height))
         display.set_caption('Flappy Bird')
 
-    def update(self, *args):
+    def update(self, is_play, *args):  # để có thể sử lấy ra các biến trong control.
         Screen.window.blit(self.bg, (0, 0))
         for sub in args:
-            sub.draw(Screen.window)
+            sub.draw(Screen.window, is_play)
         display.update()
