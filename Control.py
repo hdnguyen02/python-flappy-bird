@@ -8,7 +8,6 @@ from Pipe import Pipe
 
 class Control:
     __fps = 60
-
     def __init__(self):
         self.clock = time.Clock()
         self.__run = True  # vẫn còn chơi game
@@ -26,12 +25,13 @@ class Control:
         return self.__is_play
 
 
-
     def play_game(self):
-        self.handle_game()
+        self.start_game()
 
-    def finish_game(self):
+    def start_game(self):
         pass
+
+
 
     def handle_game(self):
         while self.__run:

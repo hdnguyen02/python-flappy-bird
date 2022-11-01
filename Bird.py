@@ -9,30 +9,31 @@ from pygame import image, transform, Surface, USEREVENT, time
 class Bird:
     __gravity = 0.25
     __speed = 5
-    bird_fly = USEREVENT + 1
+    bird_fly = USEREVENT + 5
     time.set_timer(bird_fly, 16)
-    # tọa đô x center x của chim
+    # tọa độ của chim
+    centerx = 140
+
 
 
     def __init__(self):
-        self.centerx = 140
         self.list_surface = []
         self.add_list_surface()
         self.index_surface = 0
         self.surface = self.list_surface[self.index_surface]
-        self.rect = self.surface.get_rect(center=(self.centerx , Screen.height / 2))
+        self.rect = self.surface.get_rect(center=(Bird.centerx , Screen.height / 2))
         self.movement = 0
 
         # tạo hiệu ứng chim bay.
     def animation(self):
         self.surface = self.list_surface[self.index_surface]
-        self.rect = self.surface.get_rect(center=(self.centerx, self.rect.centery))
+        self.rect = self.surface.get_rect(center=(Bird.centerx, self.rect.centery))
 
     def add_list_surface(self):
         for i in range(17):
             temp = image.load('image/bird/' + str(i) + '.jpg')
             w, h = Surface.get_size(temp)
-            temp = transform.scale(temp, (w / 15, h / 15))
+            temp = transform.scale(temp, (w / 17, h / 17))
             self.list_surface.append(temp)
 
     def rotate(self):

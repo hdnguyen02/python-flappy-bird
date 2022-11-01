@@ -2,6 +2,8 @@
 from View import Screen
 from pygame import image, Surface
 
+# nêu thay đổi : chỉ thay đổi background, chim
+# còn cột và sàn là cố định
 
 
 
