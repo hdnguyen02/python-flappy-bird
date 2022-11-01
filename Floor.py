@@ -3,8 +3,10 @@ from View import Screen
 from pygame import image, Surface
 
 
+
+
 class Floor:
-    surface = image.load('image/floor/floor.png')
+    surface = image.load('image/floor/floor.jpg')
     width = Surface.get_width(surface)
     height = Surface.get_height(surface)
     speed = 2
