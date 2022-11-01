@@ -5,8 +5,7 @@ from pygame import USEREVENT, time, image, transform
 from queue import Queue
 
 
-# ý tưởng: chỉ có 3 pipe được tạo ra. -> sau đó thay phiên vẽ lại 3 cây trụ này
-# xác định witdh height của chương trình
+
 
 
 class Pipe:

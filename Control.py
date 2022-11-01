@@ -25,12 +25,7 @@ class Control:
     def is_play(self):
         return self.__is_play
 
-    def finish_game(self):
-        self.__is_play = True
-        self.bird.reset_game()
-        self.pipe.reset_game()
-        self.achievement.reset_game()
-        # hiển thị view kết thúc ra màn hình
+
 
     def play_game(self):
         self.handle_game()
@@ -61,21 +56,11 @@ class Control:
                     self.bird.animation()
 
                 self.pipe.handle_create_pipe(sub)
-
             self.achievement.computed_score(self.pipe, self.bird)
             self.view.update(self.__is_play, self.pipe, self.floor, self.bird, self.achievement)
             self.__is_play = not self.bird.is_collision(self.pipe)
         quit()
 
-    def start_game(self):
-        while self.__run:
-            self.clock.tick(Control.__fps)
-            for sub in event.get():
-                if sub.type == QUIT:
-                    self.__run = False
 
-            # vẽ ra giao diện tại đây -> bắc sự kiện người dùng click.
-            # su ly hien thi view tai day.
-            self.view.handle_view_start_game()  # su ly view start.
 
 

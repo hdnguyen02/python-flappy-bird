@@ -55,7 +55,7 @@ class Achievement:
 
 
 class View:
-    # load vao button game
+    #load vao button game
     surface_btn_start = image.load('image/button/start-removebg-preview.jpg')  # load vao anh
 
     w_btn_start, h_btn_start = surface_btn_start.get_size()
@@ -76,10 +76,6 @@ class View:
     rect_title = surface_title.get_rect(center = (Screen.width / 2, 200))
 
 
-    # load vao o nhap ten nguoi dung
-    surface_input = image.load('image/input/input-name.jpg')
-
-    rect_input = surface_input.get_rect(center=(Screen.width / 2, 300))
 
     def __init__(self):
         init()
