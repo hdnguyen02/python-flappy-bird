@@ -1,6 +1,6 @@
 from Floor import Floor
-from pygame import image, transform, Surface, USEREVENT, time,init
-
+from pygame import image, transform, Surface, USEREVENT, time,init, mixer
+mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=512)
 init()
 
 
@@ -11,6 +11,10 @@ class Bird:
     time.set_timer(bird_fly, 16)
 
     centerx = 140
+
+    sound_space_click = mixer.Sound('sound/nhay.mp3')
+    sound_collision = mixer.Sound('sound/vacham.mp3')
+    sound_die = mixer.Sound('sound/thua.mp3')
 
     def __init__(self, screen):
         self.screen = screen
@@ -38,6 +42,7 @@ class Bird:
         return transform.rotate(self.surface, -self.movement * 2)
 
     def handle_click_and_mouse(self):
+        Bird.sound_space_click.play()
         self.movement = 0
         self.movement = -Bird.speed
 
@@ -47,15 +52,13 @@ class Bird:
 
     def is_collision(self, pipe):  # return về True nếu con chim đã va chạm
         for pipe in pipe.queue_pipe.queue:
-            if self.rect.colliderect(pipe["rect_pipe_top"]):
-                return True
-            elif self.rect.colliderect(pipe["rect_pipe_bottom"]):
+            if self.rect.colliderect(pipe["rect_pipe_top"]) or self.rect.colliderect(pipe["rect_pipe_bottom"]):
                 return True
         if self.rect.top <= 0 or self.rect.bottom >= self.screen.height - Floor.height:
             return True
         return False
 
-    def draw(self, is_play):
+    def draw_handle_game(self, is_play):
         if not is_play:
             return
         self.movement += Bird.gravity

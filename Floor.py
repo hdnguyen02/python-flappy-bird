@@ -10,7 +10,7 @@ class Floor:
         self.screen = screen
         self.x = 0
 
-    def draw(self, is_play):
+    def draw_handle_game(self, is_play):
         if not is_play:
             return
         rect_01 = self.surface.get_rect(bottomleft=(self.x, self.screen.height))

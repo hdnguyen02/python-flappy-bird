@@ -11,7 +11,7 @@ class Pipe:
     sf_top = transform.flip(sf_bottom, False, True)
     speed = 2
     repeat_time = 2000
-    event_pipe = USEREVENT
+    event_pipe = USEREVENT + 6
     time.set_timer(event_pipe, repeat_time)
     blank = 160
 
@@ -38,7 +38,7 @@ class Pipe:
             pipe["rect_pipe_bottom"].centerx -= Pipe.speed
             pipe["rect_pipe_top"].centerx -= Pipe.speed
 
-    def draw(self, is_play):
+    def draw_handle_game(self, is_play):
         if not is_play:
             return
         self.__check_number_pipe()
