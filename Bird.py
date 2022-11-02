@@ -1,30 +1,28 @@
-from View import Screen
 from Floor import Floor
-from pygame import image, transform, Surface, USEREVENT, time
+from pygame import image, transform, Surface, USEREVENT, time,init
 
-
-# Điều chỉnh class Bird
+init()
 
 
 class Bird:
-    __gravity = 0.25
-    __speed = 5
+    gravity = 0.25
+    speed = 5
     bird_fly = USEREVENT + 5
     time.set_timer(bird_fly, 16)
-    # tọa độ của chim
+
     centerx = 140
 
-
-
-    def __init__(self):
+    def __init__(self, screen):
+        self.screen = screen
         self.list_surface = []
         self.add_list_surface()
         self.index_surface = 0
         self.surface = self.list_surface[self.index_surface]
-        self.rect = self.surface.get_rect(center=(Bird.centerx , Screen.height / 2))
+        self.rect = self.surface.get_rect(center=(Bird.centerx, self.screen.height / 2))
         self.movement = 0
 
         # tạo hiệu ứng chim bay.
+
     def animation(self):
         self.surface = self.list_surface[self.index_surface]
         self.rect = self.surface.get_rect(center=(Bird.centerx, self.rect.centery))
@@ -41,10 +39,10 @@ class Bird:
 
     def handle_click_and_mouse(self):
         self.movement = 0
-        self.movement = -Bird.__speed
+        self.movement = -Bird.speed
 
     def reset_game(self):
-        self.rect = self.surface.get_rect(center=(self.centerx, Screen.height / 2))
+        self.rect = self.surface.get_rect(center=(self.centerx, self.window.height // 2))
         self.movement = 0
 
     def is_collision(self, pipe):  # return về True nếu con chim đã va chạm
@@ -53,16 +51,14 @@ class Bird:
                 return True
             elif self.rect.colliderect(pipe["rect_pipe_bottom"]):
                 return True
-        if self.rect.top <= 0 or self.rect.bottom >= Screen.height - Floor.height:
+        if self.rect.top <= 0 or self.rect.bottom >= self.screen.height - Floor.height:
             return True
         return False
 
-    def draw(self, window, is_play):
+    def draw(self, is_play):
         if not is_play:
             return
-        self.movement += Bird.__gravity
+        self.movement += Bird.gravity
         bird_rotate = self.rotate()
         self.rect.centery += self.movement
-        window.blit(bird_rotate, self.rect)
-
-        # kiem tra va cham
+        self.screen.window.blit(bird_rotate, self.rect)

@@ -1,32 +1,29 @@
 from random import randrange
 from Floor import Floor
-from View import Screen
 from pygame import USEREVENT, time, image, transform
 from queue import Queue
 
 
-
-
-
 class Pipe:
-    width, height = 60, 360
     min_y = 160
-    surface_bottom = transform.scale(image.load('image/pipe/pipe.jpg'), (width, height))
-    surface_top = transform.flip(surface_bottom, False, True)
-    start_y_random = Screen.height - Floor.height + 10
-    end_y_random = start_y_random + height - min_y
-    previous_y = None  # luu tru lan random truoc.
-    step = 50
-    speed = 2  # tốc độ di chuyển.
-    # khởi tạo sự kiện cho pipe
+    width, height = 60, 360
+    sf_bottom = transform.scale(image.load('image/pipe/pipe.jpg'), (width, height))
+    sf_top = transform.flip(sf_bottom, False, True)
+    speed = 2
+    repeat_time = 2000
     event_pipe = USEREVENT
-    repeat_time = 2000  # 1200 giây là xuất hiện trụ
     time.set_timer(event_pipe, repeat_time)
-    blank = 160  # khoản hở giữa 2 trụ
+    blank = 160
 
-    def __init__(self):
+    def __init__(self, screen):
+
+        self.screen = screen
+        self.start_y_rd = self.screen.height - Floor.height + 10
+        self.end_y_rd = self.start_y_rd + Pipe.height - Pipe.min_y
+        self.step_rd = 50
+        self.previous_y = None
+
         self.queue_pipe = Queue()  # khởi tạo queue -> tí dễ xóa cái đầu tiên.
-        self.pipe_pass = 0
 
     def handle_create_pipe(self, sub_event):
         if sub_event.type == Pipe.event_pipe:
@@ -37,37 +34,31 @@ class Pipe:
             self.queue_pipe.get()
 
     def __move_pipe(self):
-        right_bird = 100
         for pipe in self.queue_pipe.queue:
-            # kiểm tra xem trụ đã qua chưa.
-            if pipe["rect_pipe_bottom"].right < right_bird and not pipe["pass"]:
-                self.pipe_pass += 1
-                pipe["pass"] = True
             pipe["rect_pipe_bottom"].centerx -= Pipe.speed
             pipe["rect_pipe_top"].centerx -= Pipe.speed
 
-    def draw(self, window, is_play):
+    def draw(self, is_play):
         if not is_play:
             return
         self.__check_number_pipe()
         self.__move_pipe()
         for pipe in self.queue_pipe.queue:
-            window.blit(Pipe.surface_top, pipe["rect_pipe_top"])
-            window.blit(Pipe.surface_bottom, pipe["rect_pipe_bottom"])
+            self.screen.window.blit(Pipe.sf_top, pipe["rect_pipe_top"])
+            self.screen.window.blit(Pipe.sf_bottom, pipe["rect_pipe_bottom"])
 
     def reset_game(self):
-        self.pipe_pass = 0
         while not self.queue_pipe.empty():
             self.queue_pipe.get()
 
     def add_random_pipe(self):
         while True:
-            y_random = randrange(Pipe.start_y_random, Pipe.end_y_random, Pipe.step)
-            if y_random != Pipe.previous_y:
-                Pipe.previous_y = y_random
+            y_random = randrange(self.start_y_rd, self.end_y_rd, self.step_rd)
+            if y_random != self.previous_y:
+                self.previous_y = y_random
                 break
-        rect_pipe_bottom = Pipe.surface_bottom.get_rect(midbottom=(560, y_random))
-        rect_pipe_top = Pipe.surface_bottom.get_rect(midbottom=(560, y_random - Pipe.height - Pipe.blank))
+        rect_pipe_bottom = Pipe.sf_bottom.get_rect(midbottom=(560, y_random))
+        rect_pipe_top = Pipe.sf_bottom.get_rect(midbottom=(560, y_random - Pipe.height - Pipe.blank))
         dict_pipe = {
             "pass": False,
             "rect_pipe_bottom": rect_pipe_bottom,

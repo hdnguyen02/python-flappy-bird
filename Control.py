@@ -1,37 +1,58 @@
-from pygame import time, event, QUIT, quit, KEYDOWN, K_SPACE, MOUSEBUTTONDOWN
-from View import View, Achievement
+
+from pygame import time, event, QUIT, quit, KEYDOWN, K_SPACE, MOUSEBUTTONDOWN,display, font
+
+from Static_view import Static_view, Achievement
 from Floor import Floor
 from Bird import Bird
 from Pipe import Pipe
+from Screen import Screen
+
 
 
 
 class Control:
     __fps = 60
+    #   khai báo font.
+    font_game = font.Font('font/TypefaceMario64-ywA93.otf',40)
+
     def __init__(self):
+        self.size_screen = (500, 700)
+        self.screen = Screen(self.size_screen)
+
+        self.floor = Floor(self.screen)
+        self.static_view = Static_view(self.screen)
+        self.bird = Bird(self.screen)
+        self.pipe = Pipe(self.screen)
+        self.achievement = Achievement(self.screen,Control.font_game)
+
+
         self.clock = time.Clock()
         self.__run = True  # vẫn còn chơi game
         self.__is_play = True  # đang trong 1 ván game
-        self.floor = Floor()
-        self.view = View()
-        self.bird = Bird()
-        self.pipe = Pipe()
-        self.achievement = Achievement()  # chứa thành tích của người chơi.
-        self.temp = True
 
     # getter
     @property
     def is_play(self):
         return self.__is_play
 
+    def update_view(self):
+        self.static_view.update_view()
+        self.bird.draw(self.is_play)
+        self.pipe.draw(self.is_play)
+        self.floor.draw(self.is_play)
+        self.achievement.draw(self.is_play)
+
+        display.update()
+
 
     def play_game(self):
-        self.start_game()
+        self.handle_game()
 
     def start_game(self):
         pass
 
-
+    def finish_game(self):
+        pass
 
     def handle_game(self):
         while self.__run:
@@ -57,7 +78,10 @@ class Control:
 
                 self.pipe.handle_create_pipe(sub)
             self.achievement.computed_score(self.pipe, self.bird)
-            self.view.update(self.__is_play, self.pipe, self.floor, self.bird, self.achievement)
+
+
+            #  update.
+            self.update_view()
             self.__is_play = not self.bird.is_collision(self.pipe)
         quit()
 
