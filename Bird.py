@@ -24,8 +24,19 @@ class Bird:
         self.surface = self.list_surface[self.index_surface]
         self.rect = self.surface.get_rect(center=(Bird.centerx, self.screen.height / 2))
         self.movement = 0
+        self.rect_start = self.surface.get_rect(midleft=(370, 180))
+        self.sf_title_start = image.load('image/title.png')
+        w_title, h_title = self.sf_title_start.get_size()
+
+        self.sf_title_start = transform.scale(self.sf_title_start,(w_title / 14,h_title / 14))
 
         # tạo hiệu ứng chim bay.
+
+    def draw_game_start(self):
+        rect_title = self.sf_title_start.get_rect(midleft=(70,180))
+        self.screen.window.blit(self.sf_title_start,rect_title)
+        self.screen.window.blit(self.surface,self.rect_start)
+
 
     def animation(self):
         self.surface = self.list_surface[self.index_surface]
@@ -42,12 +53,11 @@ class Bird:
         return transform.rotate(self.surface, -self.movement * 2)
 
     def handle_click_and_mouse(self):
-        Bird.sound_space_click.play()
         self.movement = 0
         self.movement = -Bird.speed
 
     def reset_game(self):
-        self.rect = self.surface.get_rect(center=(self.centerx, self.window.height // 2))
+        self.rect = self.surface.get_rect(center=(self.centerx, self.screen.height // 2))
         self.movement = 0
 
     def is_collision(self, pipe):  # return về True nếu con chim đã va chạm
@@ -65,3 +75,7 @@ class Bird:
         bird_rotate = self.rotate()
         self.rect.centery += self.movement
         self.screen.window.blit(bird_rotate, self.rect)
+
+
+# làm tính năng chọn random chim và background + pipe
+

@@ -8,3 +8,4 @@ class Screen:
         self.size = size
         self.window = display.set_mode(self.size)
         self.manager = UIManager(self.size)
+        self.manager_finish = UIManager(self.size)
