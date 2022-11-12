@@ -1,5 +1,5 @@
 from pygame import display
-from pygame_gui import UIManager
+
 
 
 class Screen:
@@ -7,5 +7,11 @@ class Screen:
         self.width, self.height = size
         self.size = size
         self.window = display.set_mode(self.size)
-        self.manager = UIManager(self.size)
-        self.manager_finish = UIManager(self.size)
+
+
+    def draw_window(self, surface, coordinate):
+        self.window.blit(surface, coordinate)
+
+    def x_center(self, surface):
+        w = surface.get_width()
+        return self.width / 2 -  w / 2

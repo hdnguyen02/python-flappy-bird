@@ -1,74 +1,60 @@
-from pygame import image, transform, Rect, font
-import pygame_gui
-
-from Button import Button
-
-font.init()
+from Utilitie import Utilitie, Button
 
 
 class StaticView:
-    font_title = font.Font('font/TypefaceMario64-ywA93.otf',26)
-
 
     def __init__(self, screen, path='image/background/bg-2.jpg'):
         self.screen = screen
-        self.sf_bg = transform.scale(image.load(path), (1920, self.screen.height))
+        self.sf_bg = Utilitie.surface_size(path, (1920, self.screen.height))
 
-        # view phần start gam
-        self.sf_bg_start = image.load('image/background/bg.jpg')
-        self.sf_bg_start = transform.scale(self.sf_bg_start, (1920, self.screen.height))
-
-        self.replay_btn = pygame_gui.elements.UIButton(relative_rect=Rect((0, 0), (200, 60)),
-                                                  text='replay game',
-                                                  manager=self.screen.manager_finish)
+        path_bg_start = 'image/background/bg-3.jpg'
+        self.sf_bg_start = Utilitie.surface_size(path_bg_start, (1920, self.screen.height))
 
         # btn - start
-
-        sf_btn_start = image.load('image/button/start-removebg-preview.jpg')
-        sf_btn_start = transform.scale(sf_btn_start,(160,80))
-        self.btn_start = Button(self.screen.width / 2,520,sf_btn_start,self.screen)
+        sf_btn_start = Utilitie.surface_scale('image/button/btn-start.jpg', 4)
+        self.btn_start = Button(self.screen.width / 2, 540, sf_btn_start, self.screen)
 
         # btn - rank
-        sf_btn_rank = image.load('image/rank.png')
-        sf_btn_rank = transform.scale(sf_btn_rank,(90,80))
-        self.btn_rank = Button(420,60,sf_btn_rank,self.screen)
+        sf_btn_rank = Utilitie.surface_size('image/rank.png', (90, 80))
+        self.btn_rank = Button(420, 60, sf_btn_rank, self.screen)
 
         # sound and mute sound
-        self.sf_btn_sound = image.load('image/musicOn.png')
-        w_btn_sound,h_btn_sound = self.sf_btn_sound.get_size()
-        self.sf_btn_sound = transform.scale(self.sf_btn_sound,(w_btn_sound / 6,h_btn_sound / 6))
-        self.btn_sound = Button(80,46,self.sf_btn_sound,self.screen)
+        self.sf_btn_sound = Utilitie.surface_scale('image/musicOn.png', 6)
+        self.sf_btn_mute = Utilitie.surface_scale('image/musicOff.png', 6)
+        self.btn_sound = Button(80, 46, self.sf_btn_sound, self.screen)
 
-        # dua vao hinh anh.
-        self.sf_btn_mute = image.load('image/musicOff.png')
-        self.sf_btn_mute = transform.scale(self.sf_btn_mute, (w_btn_sound / 6, h_btn_sound / 6))
+        # btn back
+        sf_back = Utilitie.surface_scale('image/btn-back.png', 2)
+        self.btn_back = Button(120, 70, sf_back, self.screen)
 
+        # laod vào cái table
+        self.sf_table = Utilitie.surface_size('image/tableScore1.png', (420, 400))
+        self.sf_tops = [Utilitie.surface_scale('image/top/Rank_' + str(path + 1) + '.png', 6) for path in range(5)]
 
+        # btn replay
+        sf_replay = Utilitie.surface_scale('image/replay2.png', 2.5)
+        self.btn_replay = Button(self.screen.width / 2, 480, sf_replay, self.screen)
 
-        # tile input name
-        title_input_name = "your name: "
-        self.sf_title_input_name = StaticView.font_title.render(title_input_name,True,(0,0,0))
+    def draw_rank(self, top_user):
+        self.screen.draw_window(self.sf_bg_start, (0, 0))
+        self.screen.draw_window(self.sf_table, (40, 80 + 60 + 5))
+        self.btn_back.draw()
+        dis = 60
+        for index, sf_top in enumerate(self.sf_tops):
+            self.screen.draw_window(sf_top, (86, 195 + dis * index))
 
-
-
-
-        # input - name
-        size_input = (140, 60)
-        cordinate_input = (310,365)
-        self.input_name = pygame_gui.elements.UITextEntryLine(relative_rect=Rect(cordinate_input, size_input),
-                                                         manager=self.screen.manager,
-                                                         object_id='#input-name')
-
-
+        # lấy ra sureface
+        for index, user in enumerate(top_user):
+            # lấy ra surface.
+            info_user = user["name"] + "-" + str(user["core"])
+            sf_user = Utilitie.surface_font('font/font-nomal.ttf', 26, info_user, (0, 0, 0))
+            self.screen.draw_window(sf_user, (150, 205 + index * dis))
 
     def draw_start_game(self):
-        self.screen.window.blit(self.sf_bg_start, (0, 0))
+        self.screen.draw_window(self.sf_bg_start, (0, 0))
         self.btn_start.draw()
         self.btn_rank.draw()
         self.btn_sound.draw()
-        self.screen.window.blit(self.sf_title_input_name,(40,380))
-
-
 
     def draw_handle_game(self):
         self.screen.window.blit(self.sf_bg, (0, 0))

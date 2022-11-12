@@ -1,5 +1,6 @@
 from Floor import Floor
-from pygame import image, transform, Surface, USEREVENT, time,init, mixer
+from pygame import image, transform, Surface, USEREVENT, time, init, mixer
+
 mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=512)
 init()
 
@@ -15,12 +16,12 @@ class Bird:
     sound_space_click = mixer.Sound('sound/nhay.mp3')
     sound_collision = mixer.Sound('sound/vacham.mp3')
     sound_die = mixer.Sound('sound/thua.mp3')
+    index_surface = 0
 
     def __init__(self, screen):
         self.screen = screen
         self.list_surface = []
         self.add_list_surface()
-        self.index_surface = 0
         self.surface = self.list_surface[self.index_surface]
         self.rect = self.surface.get_rect(center=(Bird.centerx, self.screen.height / 2))
         self.movement = 0
@@ -28,15 +29,14 @@ class Bird:
         self.sf_title_start = image.load('image/title.png')
         w_title, h_title = self.sf_title_start.get_size()
 
-        self.sf_title_start = transform.scale(self.sf_title_start,(w_title / 14,h_title / 14))
+        self.sf_title_start = transform.scale(self.sf_title_start, (w_title / 14, h_title / 14))
 
         # tạo hiệu ứng chim bay.
 
     def draw_game_start(self):
-        rect_title = self.sf_title_start.get_rect(midleft=(70,180))
-        self.screen.window.blit(self.sf_title_start,rect_title)
-        self.screen.window.blit(self.surface,self.rect_start)
-
+        rect_title = self.sf_title_start.get_rect(midleft=(70, 180))
+        self.screen.window.blit(self.sf_title_start, rect_title)
+        self.screen.window.blit(self.surface, self.rect_start)
 
     def animation(self):
         self.surface = self.list_surface[self.index_surface]
@@ -76,6 +76,12 @@ class Bird:
         self.rect.centery += self.movement
         self.screen.window.blit(bird_rotate, self.rect)
 
+    def event_fly(self, event):
+        if event.type == Bird.bird_fly:
+            if self.index_surface < 16:
+                Bird.index_surface += 1
+            else:
+                Bird.index_surface = 0
+            self.animation()
 
 # làm tính năng chọn random chim và background + pipe
-
