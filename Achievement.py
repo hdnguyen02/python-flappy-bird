@@ -24,7 +24,6 @@ class Achievement:
 
     def handle_die(self):
         if self.name and self.score >= self.top_5_user[4]["core"]:
-            print('tiến hành so sánh')
             self.top_5_user.append(dict(name=self.name, core=self.score))
             self.top_5_user.sort(key=Achievement.my_compare, reverse=True)
             self.top_5_user.pop(len(self.top_5_user) - 1)
@@ -47,9 +46,7 @@ class Achievement:
                 self.score += 1
                 rCol["pass"] = True
 
-
-    # viết hàm sử dụng điểm vào trong này
-    def draw_handle_game(self, is_play):
+    def updateHandleGame(self, is_play):
         if not is_play:
             return
         margin_left = 26

@@ -2,7 +2,7 @@ from pygame import image, Surface
 
 
 class Floor:
-    surface = image.load('image/floor/floor.jpg')
+    surface = image.load('image/floor.jpg')
     width, height = Surface.get_size(surface)
     SPEED = 2
 
@@ -10,9 +10,7 @@ class Floor:
         self.screen = screen
         self.x = 0
 
-    def draw_handle_game(self, is_play):
-        if not is_play:
-            return
+    def draw_handle_game(self, isPlay):
         rect_01 = self.surface.get_rect(bottomleft=(self.x, self.screen.height))
         rect_02 = self.surface.get_rect(bottomleft=(self.x + self.width, self.screen.height))
         rect_03 = self.surface.get_rect(bottomleft=(self.x + self.width * 2, self.screen.height))
@@ -23,4 +21,5 @@ class Floor:
 
         if self.x <= -Floor.width:
             self.x = 0
-        self.x -= Floor.SPEED
+        if isPlay:
+            self.x -= Floor.SPEED

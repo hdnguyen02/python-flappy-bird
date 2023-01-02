@@ -4,7 +4,7 @@ from random import randrange
 
 class Pipe:
     WIDTH, HEIGHT = 60, 360
-    SF_COL_BOTTOM = transform.scale(image.load('image/pipe/pipe.jpg'), (WIDTH, HEIGHT))
+    SF_COL_BOTTOM = transform.scale(image.load('image/pipe.jpg'), (WIDTH, HEIGHT))
     SF_COL_TOP = transform.flip(SF_COL_BOTTOM, False, True)
     BLANK = 160
     DISTANCE = 220
@@ -16,10 +16,14 @@ class Pipe:
         self.yPrevious = None
 
         # khởi tạo cột
+        self.setupCols()
+
+    def setupCols(self):
         for i in range(3):
             x = self.screen.width + i * self.DISTANCE
             y = self.__randomYCol()
             self.__rCols.append(Pipe.createRectCol(x, y))
+
 
     @property
     def getRCols(self):
@@ -45,10 +49,12 @@ class Pipe:
             self.screen.draw_window(Pipe.SF_COL_BOTTOM, rCol["bottom"])
 
     def updateHandleGame(self, isPlay):
+
+        self.draw_cols()
         if not isPlay:
             return
-        self.draw_cols()
         for rCol in self.__rCols:
+
             rCol["top"].x -= Pipe.SPEED
             rCol["bottom"].x -= Pipe.SPEED
         if len(self.__rCols) != 0 and self.__rCols[0]["top"].x < -Pipe.WIDTH:
@@ -59,3 +65,4 @@ class Pipe:
 
     def reset_game(self):
         self.__rCols.clear()
+        self.setupCols()

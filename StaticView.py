@@ -5,13 +5,13 @@ class StaticView:
 
     def __init__(self, screen):
         self.screen = screen
-        self.sf_bg = Utilitie.surface_size("image/background/bg-3.jpg", (1920, self.screen.height))
+        self.sf_bg = Utilitie.surface_size("image/bg-3.jpg", (1920, self.screen.height))
 
-        path_bg_start = 'image/background/bg-3.jpg'
+        path_bg_start = 'image/bg-3.jpg'
         self.sf_bg_start = Utilitie.surface_size(path_bg_start, (1920, self.screen.height))
 
         # btn - start
-        sf_btn_start = Utilitie.surface_scale('image/button/btn-start.jpg', 4)
+        sf_btn_start = Utilitie.surface_scale('image/btn-start.jpg', 4)
         self.btn_start = Button(self.screen.width / 2, 540, sf_btn_start, self.screen)
 
         # btn - rank

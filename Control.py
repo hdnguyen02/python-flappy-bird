@@ -12,7 +12,7 @@ from Utilitie import Input, Utilitie
 
 class Control:
     fps = 60
-    bg_music = mixer.Sound('sound/flo.mp3')
+    bg_music = mixer.Sound('sound/nhacNen.mp3')
     MOUSE_LEFT = 1
 
     def __init__(self):
@@ -25,8 +25,8 @@ class Control:
         self.pipe = Pipe(self.screen)
         self.achievement = Achievement(self.screen)
 
-        self.is_sound = True
-        self.is_play = True
+        self.isSound = True
+        self.ispLay = True
 
         self.clock = time.Clock()
 
@@ -36,10 +36,10 @@ class Control:
 
     def updateHandleGame(self):
         self.static_view.draw_handle_game()
-        self.bird.draw_handle_game(self.is_play)
-        self.pipe.updateHandleGame(self.is_play)
-        self.floor.draw_handle_game(self.is_play)
-        self.achievement.draw_handle_game(self.is_play)
+        self.bird.draw_handle_game()
+        self.pipe.updateHandleGame(self.ispLay)
+        self.floor.draw_handle_game(self.ispLay)
+        self.achievement.updateHandleGame(self.ispLay)
         display.update()
 
     def update_view_start(self):
@@ -90,13 +90,13 @@ class Control:
 
                     # check click mute
                     if self.static_view.btn_sound.check_is_click(pos):
-                        if self.is_sound:
+                        if self.isSound:
                             mixer.pause()
                             self.static_view.btn_sound.change_sf(self.static_view.sf_btn_mute)
                         else:
                             mixer.unpause()
                             self.static_view.btn_sound.change_sf(self.static_view.sf_btn_sound)
-                        self.is_sound = not self.is_sound
+                        self.isSound = not self.isSound
 
                     # check click bxh
                     if self.static_view.btn_rank.check_is_click(pos):
@@ -154,7 +154,9 @@ class Control:
                         self.bird.reset_game()
                         self.pipe.reset_game()
                         self.achievement.reset_game()
+                        self.ispLay = True
                         self.handle_game()
+
 
             # update hinh anh tai day.
             self.screen.window.blit(self.static_view.sf_bg_start, (0, 0))
@@ -203,27 +205,31 @@ class Control:
 
     def handle_game(self):
         while True:
+            print(self.ispLay)
+            if not self.ispLay:
+                self.achievement.handle_die()
+                if self.isSound:
+                    Bird.sound_collision.play()
+                    Bird.sound_die.play()
+                # kiểm tra tại chỗ này
+                while self.bird.getY <= self.screen.height:
+                    self.clock.tick(Control.fps)
+                    self.updateHandleGame()
+
+                self.finish_game()
+
             self.clock.tick(Control.fps)
             for sub in event.get():
                 Control.check_exit_game(sub)
-
                 self.bird.event_fly(sub)
-
                 is_space = sub.type == KEYDOWN and sub.key == K_SPACE
                 is_mouse_left = sub.type == MOUSEBUTTONDOWN and sub.button == Control.MOUSE_LEFT
 
-                if (is_space or is_mouse_left) and self.is_play:  # khi game còn chơi.
-                    if self.is_sound:
+                if (is_space or is_mouse_left) and self.ispLay:  # khi game còn chơi.
+                    if self.isSound:
                         self.bird.sound_space_click.play()
                     self.bird.handle_click_and_mouse()
 
-            self.achievement.computed_score(self.pipe.getRCols, Bird.X, self.is_sound)
+            self.achievement.computed_score(self.pipe.getRCols, Bird.X, self.isSound)
             self.updateHandleGame()
-            self.is_play = not self.bird.isCcollision(self.pipe.getRCols)
-            if not self.is_play:
-                # khắc họa hình ảnh con chim chết
-                self.achievement.handle_die()
-                if self.is_sound:
-                    Bird.sound_collision.play()
-                    Bird.sound_die.play()
-                self.finish_game()
+            self.ispLay = not self.bird.isCcollision(self.pipe.getRCols)

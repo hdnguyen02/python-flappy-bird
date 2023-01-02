@@ -49,12 +49,17 @@ class Bird:
             temp = transform.scale(temp, (w / 17, h / 17))
             self.list_surface.append(temp)
 
+
+    @property
+    def getY(self):
+        return self.rect.y
+
     def handle_click_and_mouse(self):
         self.movement = 0
         self.movement = -Bird.speed
 
     def reset_game(self):
-        self.rect = self.surface.get_rect(center=(self.xBird, self.screen.height // 2))
+        self.rect = self.surface.get_rect(center=(Bird.X, self.screen.height // 2))
         self.movement = 0
 
     def isCcollision(self, rCols):  # return về True nếu con chim đã va chạm
@@ -63,9 +68,7 @@ class Bird:
                 return True
             return False
 
-    def draw_handle_game(self, is_play):
-        if not is_play:
-            return
+    def draw_handle_game(self):
         self.movement += Bird.gravity
         self.rect.centery += self.movement
         self.screen.window.blit(self.surface, self.rect)
