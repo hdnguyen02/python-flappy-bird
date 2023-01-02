@@ -34,11 +34,10 @@ class Control:
         computed_x_input = self.screen.width / 2 - 300 / 2
         self.input_name = Input(self.screen, computed_x_input, 415, 300, "Your name...", (0, 0, 128), 4)
 
-    def update_view_play(self):
+    def updateHandleGame(self):
         self.static_view.draw_handle_game()
         self.bird.draw_handle_game(self.is_play)
-        # self.pipe.draw_handle_game(self.is_play)
-        self.pipe.update_custom()
+        self.pipe.updateHandleGame(self.is_play)
         self.floor.draw_handle_game(self.is_play)
         self.achievement.draw_handle_game(self.is_play)
         display.update()
@@ -218,12 +217,9 @@ class Control:
                         self.bird.sound_space_click.play()
                     self.bird.handle_click_and_mouse()
 
-                # self.pipe.handle_create_pipe(sub)
-                #self.pipe.update_custom()
-            self.achievement.computed_score(self.pipe, self.bird, self.is_sound)
-
-            self.update_view_play()
-            self.is_play = not self.bird.is_collision(self.pipe)
+            self.achievement.computed_score(self.pipe.getRCols, Bird.X, self.is_sound)
+            self.updateHandleGame()
+            self.is_play = not self.bird.isCcollision(self.pipe.getRCols)
             if not self.is_play:
                 # khắc họa hình ảnh con chim chết
                 self.achievement.handle_die()

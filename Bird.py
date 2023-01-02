@@ -1,4 +1,3 @@
-from Floor import Floor
 from pygame import image, transform, Surface, USEREVENT, time, init, mixer
 from Utilitie import Utilitie
 
@@ -12,7 +11,7 @@ class Bird:
     bird_fly = USEREVENT + 5
     time.set_timer(bird_fly, 16)
 
-    centerx = 140
+    X = 140 # tọa độ X của chim
 
     sound_space_click = mixer.Sound('sound/nhay.mp3')
     sound_collision = mixer.Sound('sound/vacham.mp3')
@@ -24,14 +23,15 @@ class Bird:
         self.list_surface = []
         self.add_list_surface()
         self.surface = self.list_surface[self.index_surface]
-        self.rect = self.surface.get_rect(center=(Bird.centerx, self.screen.height / 2))
+        self.rect = self.surface.get_rect(topleft=(140, self.screen.height / 2))
         self.movement = 0
-
-
-
         # màn hình start game
         self.sf_title_game = Utilitie.surface_scale('image/title.png', 14)
         self.rbird_start = self.surface.get_rect(midleft=(370, 180))
+
+    @property
+    def getXBird(self):
+        return self.list_surface[0]
 
     def draw_game_start(self):
         rect_title = self.sf_title_game.get_rect(midleft=(70, 180))
@@ -40,7 +40,7 @@ class Bird:
 
     def animation(self):
         self.surface = self.list_surface[self.index_surface]
-        self.rect = self.surface.get_rect(center=(Bird.centerx, self.rect.centery))
+        self.rect = self.surface.get_rect(center=(Bird.X, self.rect.centery))
 
     def add_list_surface(self):
         for i in range(17):
@@ -54,17 +54,14 @@ class Bird:
         self.movement = -Bird.speed
 
     def reset_game(self):
-        self.rect = self.surface.get_rect(center=(self.centerx, self.screen.height // 2))
+        self.rect = self.surface.get_rect(center=(self.xBird, self.screen.height // 2))
         self.movement = 0
 
-    def is_collision(self, pipe):  # return về True nếu con chim đã va chạm
-        # for pipe in pipe.queue_pipe.queue:
-        #     if self.rect.colliderect(pipe["rect_pipe_top"]) or self.rect.colliderect(pipe["rect_pipe_bottom"]):
-        #         return True
-        # if self.rect.top <= 0 or self.rect.bottom >= self.screen.height - Floor.height:
-        #     return True
-        # return False
-        pass
+    def isCcollision(self, rCols):  # return về True nếu con chim đã va chạm
+        for rCol in rCols:
+            if self.rect.colliderect(rCol["bottom"]) or self.rect.colliderect(rCol["top"]):
+                return True
+            return False
 
     def draw_handle_game(self, is_play):
         if not is_play:

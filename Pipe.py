@@ -7,34 +7,55 @@ class Pipe:
     SF_COL_BOTTOM = transform.scale(image.load('image/pipe/pipe.jpg'), (WIDTH, HEIGHT))
     SF_COL_TOP = transform.flip(SF_COL_BOTTOM, False, True)
     BLANK = 160
-    DISTANCE = 200
+    DISTANCE = 220
     SPEED = 2
 
     def __init__(self, screen):
-        self.cols = []
+        self.__rCols = []
         self.screen = screen
-        self.setup_col()
+        self.yPrevious = None
 
-    def setup_col(self):
+        # khởi tạo cột
         for i in range(3):
             x = self.screen.width + i * self.DISTANCE
+            y = self.__randomYCol()
+            self.__rCols.append(Pipe.createRectCol(x, y))
+
+    @property
+    def getRCols(self):
+        return self.__rCols
+
+    @staticmethod
+    def createRectCol(x, y):
+        return {
+            "pass": False,
+            "top": Pipe.SF_COL_BOTTOM.get_rect(topleft=(x, y)),
+            "bottom": Pipe.SF_COL_TOP.get_rect(topleft=(x, y + Pipe.BLANK + Pipe.HEIGHT))
+        }
+
+    def __randomYCol(self):
+        while True:
             y = randrange(-Pipe.HEIGHT + 120, 0, 20)
-            self.cols.append([x, y])
+            if y != self.yPrevious:
+                return y
 
     def draw_cols(self):
-        for i in range(3):
-            self.screen.draw_window(Pipe.SF_COL_TOP, (self.cols[i][0], self.cols[i][1]))
-            self.screen.draw_window(Pipe.SF_COL_BOTTOM, (self.cols[i][0], self.cols[i][1] + self.BLANK + self.HEIGHT))
+        for rCol in self.__rCols:
+            self.screen.draw_window(Pipe.SF_COL_TOP, rCol["top"])
+            self.screen.draw_window(Pipe.SF_COL_BOTTOM, rCol["bottom"])
 
-    def update_custom(self):
+    def updateHandleGame(self, isPlay):
+        if not isPlay:
+            return
         self.draw_cols()
-        for i in range(3):
-            self.cols[i][0] -= Pipe.SPEED
-        if self.cols[0][0] < -self.WIDTH:
-            self.cols.pop(0)
-            x = self.cols[1][0] + Pipe.DISTANCE
-            y = randrange(-Pipe.HEIGHT + 120, 0, 20)
-            self.cols.append([x, y])
+        for rCol in self.__rCols:
+            rCol["top"].x -= Pipe.SPEED
+            rCol["bottom"].x -= Pipe.SPEED
+        if len(self.__rCols) != 0 and self.__rCols[0]["top"].x < -Pipe.WIDTH:
+            self.__rCols.pop(0)
+            x = self.__rCols[1]["top"].x + Pipe.DISTANCE
+            y = self.__randomYCol()
+            self.__rCols.append(Pipe.createRectCol(x, y))
 
     def reset_game(self):
-        self.cols.clear()
+        self.__rCols.clear()
