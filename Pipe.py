@@ -23,7 +23,7 @@ class Pipe:
         self.step_rd = 50
         self.previous_y = None
 
-        self.queue_pipe = Queue()  # khởi tạo queue -> tí dễ xóa cái đầu tiên.
+        self.queue_pipe = Queue()
 
     def handle_create_pipe(self, sub_event):
         if sub_event.type == Pipe.event_pipe:

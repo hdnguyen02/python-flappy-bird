@@ -1,13 +1,13 @@
 import sys
-from pygame import event, QUIT, quit, KEYDOWN, K_SPACE, MOUSEBUTTONDOWN, display, image
-from pygame import transform, font, mixer, mouse, time
+from pygame import event, QUIT, quit, KEYDOWN, K_SPACE, MOUSEBUTTONDOWN, display
+from pygame import mixer, mouse, time
 from StaticView import StaticView
 from Achievement import Achievement
 from Floor import Floor
 from Bird import Bird
 from Pipe import Pipe
 from Screen import Screen
-from Utilitie import Button, Input, Utilitie
+from Utilitie import Input, Utilitie
 
 
 class Control:
@@ -16,7 +16,7 @@ class Control:
     MOUSE_LEFT = 1
 
     def __init__(self):
-        # Control.bg_music.play(loops=-1)
+        Control.bg_music.play(loops=-1)
         self.screen = Screen((500, 700))
 
         self.floor = Floor(self.screen)
@@ -106,7 +106,6 @@ class Control:
             self.update_view_start()
 
     def finish_game(self):
-        w_screen = self.screen.width
         sf_game_over = Utilitie.surface_scale('image/gameOver.png', 6)
         centerx_game_over = self.screen.x_center(sf_game_over)
 

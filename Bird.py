@@ -1,5 +1,6 @@
 from Floor import Floor
 from pygame import image, transform, Surface, USEREVENT, time, init, mixer
+from Utilitie import Utilitie
 
 mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=512)
 init()
@@ -16,27 +17,26 @@ class Bird:
     sound_space_click = mixer.Sound('sound/nhay.mp3')
     sound_collision = mixer.Sound('sound/vacham.mp3')
     sound_die = mixer.Sound('sound/thua.mp3')
-    index_surface = 0
 
     def __init__(self, screen):
         self.screen = screen
+        self.index_surface = 0
         self.list_surface = []
         self.add_list_surface()
         self.surface = self.list_surface[self.index_surface]
         self.rect = self.surface.get_rect(center=(Bird.centerx, self.screen.height / 2))
         self.movement = 0
-        self.rect_start = self.surface.get_rect(midleft=(370, 180))
-        self.sf_title_start = image.load('image/title.png')
-        w_title, h_title = self.sf_title_start.get_size()
 
-        self.sf_title_start = transform.scale(self.sf_title_start, (w_title / 14, h_title / 14))
 
-        # tạo hiệu ứng chim bay.
+
+        # màn hình start game
+        self.sf_title_game = Utilitie.surface_scale('image/title.png', 14)
+        self.rbird_start = self.surface.get_rect(midleft=(370, 180))
 
     def draw_game_start(self):
-        rect_title = self.sf_title_start.get_rect(midleft=(70, 180))
-        self.screen.window.blit(self.sf_title_start, rect_title)
-        self.screen.window.blit(self.surface, self.rect_start)
+        rect_title = self.sf_title_game.get_rect(midleft=(70, 180))
+        self.screen.window.blit(self.sf_title_game, rect_title)
+        self.screen.window.blit(self.surface, self.rbird_start)
 
     def animation(self):
         self.surface = self.list_surface[self.index_surface]
@@ -48,9 +48,6 @@ class Bird:
             w, h = Surface.get_size(temp)
             temp = transform.scale(temp, (w / 17, h / 17))
             self.list_surface.append(temp)
-
-    def rotate(self):
-        return transform.rotate(self.surface, -self.movement * 2)
 
     def handle_click_and_mouse(self):
         self.movement = 0
@@ -72,16 +69,13 @@ class Bird:
         if not is_play:
             return
         self.movement += Bird.gravity
-        bird_rotate = self.rotate()
         self.rect.centery += self.movement
-        self.screen.window.blit(bird_rotate, self.rect)
+        self.screen.window.blit(self.surface, self.rect)
 
     def event_fly(self, event):
         if event.type == Bird.bird_fly:
             if self.index_surface < 16:
-                Bird.index_surface += 1
+                self.index_surface += 1
             else:
-                Bird.index_surface = 0
+                self.index_surface = 0
             self.animation()
-
-# làm tính năng chọn random chim và background + pipe

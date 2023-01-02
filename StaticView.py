@@ -3,9 +3,9 @@ from Utilitie import Utilitie, Button
 
 class StaticView:
 
-    def __init__(self, screen, path='image/background/bg-2.jpg'):
+    def __init__(self, screen):
         self.screen = screen
-        self.sf_bg = Utilitie.surface_size(path, (1920, self.screen.height))
+        self.sf_bg = Utilitie.surface_size("image/background/bg-3.jpg", (1920, self.screen.height))
 
         path_bg_start = 'image/background/bg-3.jpg'
         self.sf_bg_start = Utilitie.surface_size(path_bg_start, (1920, self.screen.height))

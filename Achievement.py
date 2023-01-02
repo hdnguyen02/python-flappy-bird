@@ -3,7 +3,6 @@ from Utilitie import Utilitie
 
 init()
 
-
 class Achievement:
     sound_pass = mixer.Sound('sound/congdiem.mp3')
     font_show_user = font.Font('font/show-user.ttf', 36)
