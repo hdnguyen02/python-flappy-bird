@@ -13,7 +13,7 @@ class Utilitie:
     def surface_scale(path, scale):
         surface = image.load(path)
         width, height = surface.get_size()
-        # update witdh height
+        # update witdh HEIGHT
         width = width / scale
         height = height / scale
 

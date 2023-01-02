@@ -4,7 +4,7 @@ from pygame import image, Surface
 class Floor:
     surface = image.load('image/floor/floor.jpg')
     width, height = Surface.get_size(surface)
-    speed = 2
+    SPEED = 2
 
     def __init__(self, screen):
         self.screen = screen
@@ -23,4 +23,4 @@ class Floor:
 
         if self.x <= -Floor.width:
             self.x = 0
-        self.x -= Floor.speed
+        self.x -= Floor.SPEED

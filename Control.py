@@ -37,7 +37,8 @@ class Control:
     def update_view_play(self):
         self.static_view.draw_handle_game()
         self.bird.draw_handle_game(self.is_play)
-        self.pipe.draw_handle_game(self.is_play)
+        # self.pipe.draw_handle_game(self.is_play)
+        self.pipe.update_custom()
         self.floor.draw_handle_game(self.is_play)
         self.achievement.draw_handle_game(self.is_play)
         display.update()
@@ -217,7 +218,8 @@ class Control:
                         self.bird.sound_space_click.play()
                     self.bird.handle_click_and_mouse()
 
-                self.pipe.handle_create_pipe(sub)
+                # self.pipe.handle_create_pipe(sub)
+                #self.pipe.update_custom()
             self.achievement.computed_score(self.pipe, self.bird, self.is_sound)
 
             self.update_view_play()

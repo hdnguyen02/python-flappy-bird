@@ -58,12 +58,13 @@ class Bird:
         self.movement = 0
 
     def is_collision(self, pipe):  # return về True nếu con chim đã va chạm
-        for pipe in pipe.queue_pipe.queue:
-            if self.rect.colliderect(pipe["rect_pipe_top"]) or self.rect.colliderect(pipe["rect_pipe_bottom"]):
-                return True
-        if self.rect.top <= 0 or self.rect.bottom >= self.screen.height - Floor.height:
-            return True
-        return False
+        # for pipe in pipe.queue_pipe.queue:
+        #     if self.rect.colliderect(pipe["rect_pipe_top"]) or self.rect.colliderect(pipe["rect_pipe_bottom"]):
+        #         return True
+        # if self.rect.top <= 0 or self.rect.bottom >= self.screen.height - Floor.height:
+        #     return True
+        # return False
+        pass
 
     def draw_handle_game(self, is_play):
         if not is_play:

@@ -40,13 +40,14 @@ class Achievement:
         pass
 
     def computed_score(self, pipe, bird, is_sound):  # truyền vào đối tượng chim và đối tượng bird
-        left_bird = bird.rect.left
-        for obj_pipe in pipe.queue_pipe.queue:
-            if obj_pipe["rect_pipe_bottom"].right < left_bird and not obj_pipe["pass"]:
-                if is_sound:
-                    Achievement.sound_pass.play()
-                self.score += 1
-                obj_pipe["pass"] = True
+        # left_bird = bird.rect.left
+        # for obj_pipe in pipe.queue_pipe.queue:
+        #     if obj_pipe["rect_pipe_bottom"].right < left_bird and not obj_pipe["pass"]:
+        #         if is_sound:
+        #             Achievement.sound_pass.play()
+        #         self.score += 1
+        #         obj_pipe["pass"] = True
+        pass
 
     # viết hàm sử dụng điểm vào trong này
     def draw_handle_game(self, is_play):
