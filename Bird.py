@@ -26,7 +26,7 @@ class Bird:
         self.rect = self.surface.get_rect(topleft=(140, self.screen.height / 2))
         self.movement = 0
         # màn hình start game
-        self.sf_title_game = Utilitie.surface_scale('image/title.png', 14)
+        self.sf_title_game = Utilitie.surfaceScale('image/title.png', 14)
         self.rbird_start = self.surface.get_rect(midleft=(370, 180))
 
     @property
@@ -63,10 +63,12 @@ class Bird:
         self.movement = 0
 
     def isCcollision(self, rCols):  # return về True nếu con chim đã va chạm
+        if self.rect.y <= 0 or self.rect.y >= self.screen.height:
+            return True
         for rCol in rCols:
             if self.rect.colliderect(rCol["bottom"]) or self.rect.colliderect(rCol["top"]):
                 return True
-            return False
+        return False
 
     def draw_handle_game(self):
         self.movement += Bird.gravity

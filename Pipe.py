@@ -45,16 +45,14 @@ class Pipe:
 
     def draw_cols(self):
         for rCol in self.__rCols:
-            self.screen.draw_window(Pipe.SF_COL_TOP, rCol["top"])
-            self.screen.draw_window(Pipe.SF_COL_BOTTOM, rCol["bottom"])
+            self.screen.draw(Pipe.SF_COL_TOP, rCol["top"])
+            self.screen.draw(Pipe.SF_COL_BOTTOM, rCol["bottom"])
 
     def updateHandleGame(self, isPlay):
-
         self.draw_cols()
         if not isPlay:
             return
         for rCol in self.__rCols:
-
             rCol["top"].x -= Pipe.SPEED
             rCol["bottom"].x -= Pipe.SPEED
         if len(self.__rCols) != 0 and self.__rCols[0]["top"].x < -Pipe.WIDTH:

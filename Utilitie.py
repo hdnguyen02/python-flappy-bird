@@ -5,12 +5,12 @@ font.init()
 
 class Utilitie:
     @staticmethod
-    def surface_size(path, size):
+    def surfaceSize(path, size):
         surface = transform.scale(image.load(path), size)
         return surface
 
     @staticmethod
-    def surface_scale(path, scale):
+    def surfaceScale(path, scale):
         surface = image.load(path)
         width, height = surface.get_size()
         # update witdh HEIGHT
@@ -21,7 +21,7 @@ class Utilitie:
         return surface
 
     @staticmethod
-    def surface_font(path_font, size_font, title, color):
+    def surfaceFont(path_font, size_font, title, color):
         use_font = font.Font(path_font, size_font)
         surface = use_font.render(title, True, color)
         return surface
@@ -36,14 +36,14 @@ class Button:
     def draw(self):
         self.screen.window.blit(self.sf, self.rect)
 
-    def check_is_click(self, pos):
+    def checkClick(self, pos):
         x_pos, y_pos = pos
         if x_pos in range(self.rect.left, self.rect.right) and y_pos in range(self.rect.top, self.rect.bottom):
             return True
         return False
 
-    def change_sf(self, new_sf):
-        self.sf = new_sf
+    def changeSF(self, newSF):
+        self.sf = newSF
 
 
 class Input:
@@ -60,19 +60,18 @@ class Input:
         self.rect = Rect((self.x, self.y - self.height), (self.width, self.height))
         self.select = False
         self.text = ''
-        self.size_text = 26
+        self.size = 26
 
     def draw(self):
-        # vẽ lên hint kiểm tra nếu như text trống -> hiển thị text
         if not self.text:
-            sf_text = Utilitie.surface_font('font/font-nomal.ttf', 26, self.hint, (0, 0, 0))
+            sf_text = Utilitie.surfaceFont('font/font-nomal.ttf', 26, self.hint, (0, 0, 0))
         else:
-            sf_text = Utilitie.surface_font('font/font-nomal.ttf', 26, self.text, (0, 0, 0))
+            sf_text = Utilitie.surfaceFont('font/font-nomal.ttf', 26, self.text, (0, 0, 0))
 
-        self.screen.draw_window(sf_text, (self.x + 10, self.y - self.height / 2 - 10))
+        self.screen.draw(sf_text, (self.x + 10, self.y - self.height / 2 - 10))
         draw.line(self.screen.window, self.color, (self.x, self.y), (self.x + self.width, self.y), self.border)
 
-    def check_is_click(self, pos):
+    def checkClick(self, pos):
         x_pos, y_pos = pos
         if x_pos in range(self.rect.left, self.rect.right) and y_pos in range(self.rect.top, self.rect.bottom):
             if not self.select:
@@ -83,7 +82,7 @@ class Input:
                 self.select = False
                 self.text = self.text[:-1]
 
-    def handle_event(self, event):
+    def handleEvent(self, event):
         if self.select and event.type == KEYDOWN:
             self.text = self.text[:-1]
             if event.key == K_SPACE:
@@ -98,5 +97,3 @@ class Input:
 
             elif event.unicode.isalpha():
                 self.text += event.unicode + '_'
-
-# bắc sự kiện khi người dùng nhấp vào vùng đó -> cho người dùng nhập

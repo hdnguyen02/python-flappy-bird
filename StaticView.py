@@ -5,56 +5,63 @@ class StaticView:
 
     def __init__(self, screen):
         self.screen = screen
-        self.sf_bg = Utilitie.surface_size("image/bg-3.jpg", (1920, self.screen.height))
-
-        path_bg_start = 'image/bg-3.jpg'
-        self.sf_bg_start = Utilitie.surface_size(path_bg_start, (1920, self.screen.height))
+        self.sBackground = Utilitie.surfaceSize("image/background.jpg", (1920, self.screen.height))
 
         # btn - start
-        sf_btn_start = Utilitie.surface_scale('image/btn-start.jpg', 4)
-        self.btn_start = Button(self.screen.width / 2, 540, sf_btn_start, self.screen)
+        sStartGame = Utilitie.surfaceScale('image/btn-start.jpg', 4)
+        self.btnStartGame = Button(self.screen.width / 2, 540, sStartGame, self.screen)
 
         # btn - rank
-        sf_btn_rank = Utilitie.surface_size('image/rank.png', (90, 80))
-        self.btn_rank = Button(420, 60, sf_btn_rank, self.screen)
+        sRankStartGame = Utilitie.surfaceSize('image/rank.png', (90, 80))
+        self.btnRankStartGame = Button(420, 60, sRankStartGame, self.screen)
 
         # sound and mute sound
-        self.sf_btn_sound = Utilitie.surface_scale('image/musicOn.png', 6)
-        self.sf_btn_mute = Utilitie.surface_scale('image/musicOff.png', 6)
-        self.btn_sound = Button(80, 46, self.sf_btn_sound, self.screen)
+        self.sSound = Utilitie.surfaceScale('image/musicOn.png', 6)
+        self.sSoundMute = Utilitie.surfaceScale('image/musicOff.png', 6)
+        self.btnSound = Button(80, 46, self.sSound, self.screen)
 
         # btn back
-        sf_back = Utilitie.surface_scale('image/btn-back.png', 2)
-        self.btn_back = Button(120, 70, sf_back, self.screen)
+        sBack = Utilitie.surfaceScale('image/btn-back.png', 2)
+        self.btnBack = Button(120, 70, sBack, self.screen)
 
         # laod vào cái table
-        self.sf_table = Utilitie.surface_size('image/tableScore1.png', (420, 400))
-        self.sf_tops = [Utilitie.surface_scale('image/top/Rank_' + str(path + 1) + '.png', 6) for path in range(5)]
+        self.sTableRank = Utilitie.surfaceSize('image/tableScore1.png', (420, 400))
+        self.sTops = [Utilitie.surfaceScale('image/top/Rank_' + str(path + 1) + '.png', 6) for path in range(5)]
 
-        # btn replay
-        sf_replay = Utilitie.surface_scale('image/replay2.png', 2.5)
-        self.btn_replay = Button(self.screen.width / 2, 480, sf_replay, self.screen)
+        # btn replay finish
+        sReplay = Utilitie.surfaceScale('image/btnReplay.png', 5)
+        self.btnReplayFinish = Button(self.screen.width / 2 + 60, 480, sReplay, self.screen)
 
-    def draw_rank(self, top_user):
-        self.screen.draw_window(self.sf_bg_start, (0, 0))
-        self.screen.draw_window(self.sf_table, (40, 80 + 60 + 5))
-        self.btn_back.draw()
+        # btn home finish
+        sHomeFinish = Utilitie.surfaceScale('image/btnHome.png', 5)
+        self.btnHomefinish = Button(self.screen.width / 2 - 60, 480, sHomeFinish, self.screen)
+
+
+
+    def updateFinish(self):
+        self.btnReplayFinish.draw()
+        self.btnHomefinish.draw()
+
+    def updateRank(self, top_user):
+        self.screen.draw(self.sf_bg_start, (0, 0))
+        self.screen.draw(self.sTableRank, (40, 80 + 60 + 5))
+        self.btnBack.draw()
         dis = 60
-        for index, sf_top in enumerate(self.sf_tops):
-            self.screen.draw_window(sf_top, (86, 195 + dis * index))
+        for index, sf_top in enumerate(self.sTops):
+            self.screen.draw(sf_top, (86, 195 + dis * index))
 
         # lấy ra sureface
         for index, user in enumerate(top_user):
             # lấy ra surface.
             info_user = user["name"] + "-" + str(user["core"])
-            sf_user = Utilitie.surface_font('font/font-nomal.ttf', 26, info_user, (0, 0, 0))
-            self.screen.draw_window(sf_user, (150, 205 + index * dis))
+            sf_user = Utilitie.surfaceFont('font/font-nomal.ttf', 26, info_user, (0, 0, 0))
+            self.screen.draw(sf_user, (150, 205 + index * dis))
 
-    def draw_start_game(self):
-        self.screen.draw_window(self.sf_bg_start, (0, 0))
-        self.btn_start.draw()
-        self.btn_rank.draw()
-        self.btn_sound.draw()
+    def drawStartGame(self):
+        self.screen.draw(self.sBackground, (0, 0))
+        self.btnStartGame.draw()
+        self.btnRankStartGame.draw()
+        self.btnSound.draw()
 
     def draw_handle_game(self):
-        self.screen.window.blit(self.sf_bg, (0, 0))
+        self.screen.window.blit(self.sBackground, (0, 0))
