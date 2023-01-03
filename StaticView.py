@@ -36,14 +36,12 @@ class StaticView:
         sHomeFinish = Utilitie.surfaceScale('image/btnHome.png', 5)
         self.btnHomefinish = Button(self.screen.width / 2 - 60, 480, sHomeFinish, self.screen)
 
-
-
     def updateFinish(self):
         self.btnReplayFinish.draw()
         self.btnHomefinish.draw()
 
     def updateRank(self, top_user):
-        self.screen.draw(self.sf_bg_start, (0, 0))
+        self.screen.draw(self.sBackground, (0, 0))
         self.screen.draw(self.sTableRank, (40, 80 + 60 + 5))
         self.btnBack.draw()
         dis = 60
@@ -63,5 +61,5 @@ class StaticView:
         self.btnRankStartGame.draw()
         self.btnSound.draw()
 
-    def draw_handle_game(self):
+    def updateHandleGame(self):
         self.screen.window.blit(self.sBackground, (0, 0))

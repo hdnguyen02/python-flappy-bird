@@ -10,14 +10,14 @@ class Floor:
         self.screen = screen
         self.x = 0
 
-    def draw_handle_game(self, isPlay):
-        rect_01 = self.surface.get_rect(bottomleft=(self.x, self.screen.height))
-        rect_02 = self.surface.get_rect(bottomleft=(self.x + self.width, self.screen.height))
-        rect_03 = self.surface.get_rect(bottomleft=(self.x + self.width * 2, self.screen.height))
+    def updateHandleGame(self, isPlay):
+        rect01 = self.surface.get_rect(bottomleft=(self.x, self.screen.height))
+        rect02 = self.surface.get_rect(bottomleft=(self.x + self.width, self.screen.height))
+        rect03 = self.surface.get_rect(bottomleft=(self.x + self.width * 2, self.screen.height))
 
-        self.screen.window.blit(self.surface, rect_01)
-        self.screen.window.blit(self.surface, rect_02)
-        self.screen.window.blit(self.surface, rect_03)
+        self.screen.window.blit(self.surface, rect01)
+        self.screen.window.blit(self.surface, rect02)
+        self.screen.window.blit(self.surface, rect03)
 
         if self.x <= -Floor.width:
             self.x = 0

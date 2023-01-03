@@ -1,6 +1,5 @@
 import sys
-from pygame import event, QUIT, quit, KEYDOWN, K_SPACE, MOUSEBUTTONDOWN, display
-from pygame import mixer, mouse, time
+from pygame import event, QUIT, quit, KEYDOWN, K_SPACE, MOUSEBUTTONDOWN, display, mixer, mouse, time
 from StaticView import StaticView
 from Achievement import Achievement
 from Floor import Floor
@@ -11,50 +10,45 @@ from Utilitie import Input, Utilitie
 
 
 class Control:
-    fps = 60
-    bg_music = mixer.Sound('sound/nhacNen.mp3')
+    FPS = 60
+    nhacNen = mixer.Sound('sound/nhacNen.mp3')
     MOUSE_LEFT = 1
 
     def __init__(self):
-        # Control.bg_music.play(loops=-1)
+        Control.nhacNen.play(loops=-1)  # lặp vô hạn
         self.screen = Screen((500, 700))
-
-        self.floor = Floor(self.screen)
-        self.staticView = StaticView(self.screen)
         self.bird = Bird(self.screen)
         self.pipe = Pipe(self.screen)
+        self.floor = Floor(self.screen)
         self.achievement = Achievement(self.screen)
-
+        self.staticView = StaticView(self.screen)
         self.isSound = True
         self.ispLay = True
-
         self.clock = time.Clock()
 
         # input
-        computed_x_input = self.screen.width / 2 - 300 / 2
-        self.input_name = Input(self.screen, computed_x_input, 415, 300, "Your name...", (0, 0, 128), 4)
+        self.input_name = Input(self.screen, self.screen.width / 2 - 300 / 2, 415, 300, "Your name...", (0, 0, 128), 4)
 
     def updateHandleGame(self):
-        self.staticView.draw_handle_game()
-        self.bird.draw_handle_game()
+        self.staticView.updateHandleGame()
+        self.bird.updateHandleGame()
         self.pipe.updateHandleGame(self.ispLay)
-        self.floor.draw_handle_game(self.ispLay)
+        self.floor.updateHandleGame(self.ispLay)
         self.achievement.updateHandleGame(self.ispLay)
         display.update()
 
     def updateStart(self):
         self.staticView.drawStartGame()
-        self.floor.draw_handle_game(True)
+        self.floor.updateHandleGame(True)
         self.achievement.updateStartgame()
-        self.bird.draw_game_start()
-
+        self.bird.updateGameStart()
         self.input_name.draw()
         display.update()
 
     def showRank(self):
         top_5 = self.achievement.top_5_user
         while True:
-            self.clock.tick(Control.fps)
+            self.clock.tick(Control.FPS)
             for sub in event.get():
                 Control.checkExitGame(sub)
                 if sub.type == MOUSEBUTTONDOWN and sub.button == Control.MOUSE_LEFT:
@@ -62,7 +56,7 @@ class Control:
                     if self.staticView.btnBack.checkClick(pos):
                         self.startGame()
             self.staticView.updateRank(top_5)
-            self.floor.draw_handle_game(True)
+            self.floor.updateHandleGame(True)
             display.update()
 
     @staticmethod
@@ -73,10 +67,10 @@ class Control:
 
     def startGame(self):
         while True:
-            self.clock.tick(Control.fps)
+            self.clock.tick(Control.FPS)
             for sub in event.get():
                 Control.checkExitGame(sub)
-                self.bird.event_fly(sub)
+                self.bird.eventFly(sub)
 
                 if sub.type == MOUSEBUTTONDOWN and sub.button == Control.MOUSE_LEFT:
                     pos = mouse.get_pos()
@@ -106,8 +100,8 @@ class Control:
             self.updateStart()
 
     def resetGame(self):
-        self.bird.reset_game()
-        self.pipe.reset_game()
+        self.bird.resetGame()
+        self.pipe.resetGame()
         self.achievement.resetGame()
         self.ispLay = True
 
@@ -204,7 +198,7 @@ class Control:
 
             self.staticView.btnReplayFinish.draw()
             self.staticView.btnHomefinish.draw()
-            self.floor.draw_handle_game(True)
+            self.floor.updateHandleGame(True)
 
             display.update()
 
@@ -213,27 +207,27 @@ class Control:
             if not self.ispLay:
                 self.achievement.handleDie()
                 if self.isSound:
-                    Bird.sound_collision.play()
-                    Bird.sound_die.play()
+                    Bird.soundCollision.play()
+                    Bird.soundDie.play()
                 # kiểm tra tại chỗ này
                 while self.bird.getY <= self.screen.height:
-                    self.clock.tick(Control.fps)
+                    self.clock.tick(Control.FPS)
                     self.updateHandleGame()
 
                 self.finishGame()
 
-            self.clock.tick(Control.fps)
-            for sub in event.get():
-                Control.checkExitGame(sub)
-                self.bird.event_fly(sub)
-                is_space = sub.type == KEYDOWN and sub.key == K_SPACE
-                is_mouse_left = sub.type == MOUSEBUTTONDOWN and sub.button == Control.MOUSE_LEFT
+            self.clock.tick(Control.FPS)
+            for subEvent in event.get():
+                Control.checkExitGame(subEvent)
+                self.bird.eventFly(subEvent)
+                isSpace = subEvent.type == KEYDOWN and subEvent.key == K_SPACE
+                isMmouseLeft = subEvent.type == MOUSEBUTTONDOWN and subEvent.button == Control.MOUSE_LEFT
 
-                if (is_space or is_mouse_left) and self.ispLay:  # khi game còn chơi.
+                if isSpace or isMmouseLeft:  # khi game còn chơi.
                     if self.isSound:
-                        self.bird.sound_space_click.play()
-                    self.bird.handle_click_and_mouse()
+                        self.bird.soundJump.play()
+                    self.bird.handleJump()
 
             self.achievement.computedScore(self.pipe.getRCols, Bird.X, self.isSound)
             self.updateHandleGame()
-            self.ispLay = not self.bird.isCcollision(self.pipe.getRCols)
+            self.ispLay = not self.bird.isCollision(self.pipe.getRCols)

@@ -61,6 +61,6 @@ class Pipe:
             y = self.__randomYCol()
             self.__rCols.append(Pipe.createRectCol(x, y))
 
-    def reset_game(self):
+    def resetGame(self):
         self.__rCols.clear()
         self.setupCols()
