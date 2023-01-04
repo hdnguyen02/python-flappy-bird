@@ -1,19 +1,14 @@
-from pygame import image, transform, Surface, USEREVENT, time, init, mixer
+from pygame import USEREVENT, time, mixer
 from Utilitie import Utilitie
 from Floor import Floor
-
-mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=512)
-init()
 
 
 class Bird:
     GRAVITY = 0.25
     SPEED = 5
     eventBirdFly = USEREVENT + 5
-    time.set_timer(eventBirdFly, 16)
-
+    time.set_timer(eventBirdFly, 16)  # 16 millis
     X = 140  # tọa độ X của chim
-
     soundJump = mixer.Sound('sound/nhay.mp3')
     soundCollision = mixer.Sound('sound/vacham.mp3')
     soundDie = mixer.Sound('sound/thua.mp3')
@@ -24,7 +19,7 @@ class Bird:
         self.list_surface = []
         self.addListSurface()
         self.surface = self.list_surface[self.index_surface]
-        self.rect = self.surface.get_rect(topleft=(140, self.screen.height / 2))
+        self.rect = self.surface.get_rect(topleft=(140, 200))
         self.movement = 0
         # màn hình start game
         self.sf_title_game = Utilitie.surfaceScale('image/title.png', 14)
@@ -35,14 +30,10 @@ class Bird:
         self.screen.window.blit(self.sf_title_game, rect_title)
         self.screen.window.blit(self.surface, self.rbird_start)
 
-    def animation(self):
-        self.surface = self.list_surface[self.index_surface]
 
     def addListSurface(self):
         for i in range(17):
-            temp = image.load('image/bird/' + str(i) + '.jpg')
-            w, h = Surface.get_size(temp)
-            temp = transform.scale(temp, (w / 17, h / 17))
+            temp = Utilitie.surfaceScale('image/bird/' + str(i) + '.jpg', 17)
             self.list_surface.append(temp)
 
     @property
@@ -53,10 +44,10 @@ class Bird:
         self.movement = -Bird.SPEED
 
     def resetGame(self):
-        self.rect = self.surface.get_rect(center=(Bird.X, self.screen.height // 2))
+        self.rect = self.surface.get_rect(center=(Bird.X, 200))
         self.movement = 0
 
-    def isCollision(self, rCols):  # return về True nếu con chim đã va chạm
+    def isCollision(self, rCols):  # return về True nếu bird va chạm sàn. cột
         if self.rect.y <= 0 or self.rect.y >= self.screen.height - Floor.height:
             return True
         for rCol in rCols:
@@ -67,7 +58,7 @@ class Bird:
     def updateHandleGame(self):
         self.movement += Bird.GRAVITY
         self.rect.centery += self.movement
-        self.screen.window.blit(self.surface, self.rect)
+        self.screen.draw(self.surface, self.rect)
 
     def eventFly(self, event):
         if event.type == Bird.eventBirdFly:
@@ -75,4 +66,4 @@ class Bird:
                 self.index_surface += 1
             else:
                 self.index_surface = 0
-            self.animation()
+            self.surface = self.list_surface[self.index_surface]

@@ -15,9 +15,9 @@ class Floor:
         rect02 = self.surface.get_rect(bottomleft=(self.x + self.width, self.screen.height))
         rect03 = self.surface.get_rect(bottomleft=(self.x + self.width * 2, self.screen.height))
 
-        self.screen.window.blit(self.surface, rect01)
-        self.screen.window.blit(self.surface, rect02)
-        self.screen.window.blit(self.surface, rect03)
+        self.screen.draw(self.surface, rect01)
+        self.screen.draw(self.surface, rect02)
+        self.screen.draw(self.surface, rect03)
 
         if self.x <= -Floor.width:
             self.x = 0

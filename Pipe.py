@@ -24,7 +24,6 @@ class Pipe:
             y = self.__randomYCol()
             self.__rCols.append(Pipe.createRectCol(x, y))
 
-
     @property
     def getRCols(self):
         return self.__rCols
