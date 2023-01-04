@@ -13,7 +13,7 @@ class Utilitie:
     def surfaceScale(path, scale):
         surface = image.load(path)
         width, height = surface.get_size()
-        # update witdh HEIGHT
+        # update HEIGHT HEIGHT
         width = width / scale
         height = height / scale
 
@@ -80,7 +80,7 @@ class Input:
         else:
             if self.select:
                 self.select = False
-                self.text = self.text[:-1]
+                self.text = self.text[:-1] # bỏ đi ký tu cuoi cung
 
     def handleEvent(self, event):
         if self.select and event.type == KEYDOWN:

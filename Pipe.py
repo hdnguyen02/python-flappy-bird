@@ -40,6 +40,7 @@ class Pipe:
         while True:
             y = randrange(-Pipe.HEIGHT + 120, 0, 20)
             if y != self.yPrevious:
+                self.yPrevious = y 
                 return y
 
     def draw_cols(self):
